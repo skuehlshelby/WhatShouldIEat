@@ -1,4 +1,4 @@
-package whatShouldIEat;
+package controller;
 
 public class Main {
 
