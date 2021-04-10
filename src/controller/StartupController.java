@@ -21,9 +21,7 @@ public class StartupController
 
     public void doStartup()
     {
-        IO io = new IO();
-        UserPrefs prefs = io.getUserPreferences();
-        List<Restaurant> data = io.loadFromFile(prefs.getStorageLocation());
+        List<Restaurant> data = IO.loadFromFile();
 
         if(data.isEmpty())
         {
