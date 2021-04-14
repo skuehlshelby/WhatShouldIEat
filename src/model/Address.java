@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class Address {
+public class Address implements IValidateSelf {
 
     private String street;
     private String city;
@@ -43,6 +43,7 @@ public class Address {
         this.zip = zip;
     }
 
+    @Override
     public List<String> isValid() {
         List<String> errors = new ArrayList<>();
 
