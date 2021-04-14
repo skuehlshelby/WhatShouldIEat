@@ -26,14 +26,18 @@ public class RootFrame
 
     public void setContent(JPanel content)
     {
-        if(!root.isVisible())
-        {
-            root.setVisible(true);
-        }
-
         root.getContentPane().removeAll();
         root.getContentPane().add(content);
         root.getContentPane().revalidate();
         root.getContentPane().repaint();
+    }
+
+    public void show()
+    {
+        if(!root.isVisible())
+        {
+            root.setVisible(true);
+            root.getContentPane().repaint();
+        }
     }
 }

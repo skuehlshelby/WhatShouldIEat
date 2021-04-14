@@ -3,9 +3,12 @@ package controller;
 import model.IO;
 import model.Restaurant;
 import model.UserPrefs;
-import view.FirstTimeStartup;
 import view.RootFrame;
-
+import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.awt.event.ActionEvent;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +28,7 @@ public class StartupController
 
         if(data.isEmpty())
         {
-            showFirstTimeScreen(data);
+//            showFirstTimeScreen();
         }
         else
         {
@@ -33,16 +36,27 @@ public class StartupController
         }
     }
 
-    private void showFirstTimeScreen(List<Restaurant> data)
-    {
-        FirstTimeStartup firstTimeStartup = new FirstTimeStartup();
 
-        firstTimeStartup.registerStartClickListener(e -> startupComplete(data));
-        //firstTimeStartup.registerLoadClickListener(); TODO
-        rootFrame.setContent(firstTimeStartup.getContent());
+    private void onStartClick(ActionEvent e)
+    {
+        startupComplete(new ArrayList<>());
     }
 
-    public void onStartupCompletion(StartupCompleteListener listener)
+    private void onLoadClick(ActionEvent e)
+    {
+        JFileChooser fileChooser = new JFileChooser();
+        FileFilter filter = new FileNameExtensionFilter("XML Files", ".xml");
+        fileChooser.addChoosableFileFilter(filter);
+
+/*        if (fileChooser.showOpenDialog(firstTimeStartup.getContent()) == JFileChooser.APPROVE_OPTION)
+        {
+            File file = fileChooser.getSelectedFile();
+            new UserPrefs().setRestaurantDataLocation(file.getAbsolutePath());
+            startupComplete(IO.loadFromFile());
+        }*/
+    }
+
+    public void registerStartupCompleteListener(StartupCompleteListener listener)
     {
         listeners.add(listener);
     }
