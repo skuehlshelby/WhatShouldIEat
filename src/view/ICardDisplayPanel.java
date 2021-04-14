@@ -3,5 +3,5 @@ package view;
 public interface ICardDisplayPanel {
     void addCard(IRestaurantCard card);
 
-    boolean removeCard(IRestaurantCard card);
+    void removeCard(IRestaurantCard card);
 }

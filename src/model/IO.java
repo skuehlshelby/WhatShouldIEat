@@ -28,8 +28,7 @@ public class IO
 
                     if(asList.stream().allMatch(item -> item instanceof Restaurant))
                     {
-                        List<Restaurant> data = asList.stream().map(item -> (Restaurant) item).collect(Collectors.toList());
-                        return data;
+                        return asList.stream().map(Restaurant.class::cast).collect(Collectors.toList());
                     }
                 }
 

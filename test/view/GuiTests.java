@@ -55,8 +55,30 @@ class GuiTests
     }
 
     @Test
-    public void showMainPanel()
+    public void swapDataPanelViews()
     {
+        JPanel mainPanel = new JPanel();
 
+        JPanel cardPanel = new JPanel();
+        cardPanel.setLayout(new CardLayout());
+
+        FreshStartPanel freshStartPanel = new FreshStartPanel();
+        CardDisplayPanel cardDisplayPanel = new CardDisplayPanel();
+        cardDisplayPanel.addCard(new RestaurantCard("Westside Coffee", "Coffee", "Bagel"));
+        cardDisplayPanel.addCard(new RestaurantCard("Westside Coffee", "Coffee", "Bagel"));
+
+        cardPanel.add(freshStartPanel, "FreshStartPanel");
+        cardPanel.add(cardDisplayPanel, "CardDisplayPanel");
+
+        mainPanel.add(cardPanel);
+
+        JFrame frame = new JFrame("What Should I Eat?");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.getContentPane().add(mainPanel);
+        frame.pack();
+        frame.setVisible(true);
+
+        CardLayout c = (CardLayout) cardPanel.getLayout();
+        c.show(cardPanel, "CardDisplayPanel");
     }
 }

@@ -21,10 +21,12 @@ public class Main {
             mainPanel.getButtonPanel().addSelectNoneClickListener(e -> JOptionPane.showMessageDialog(rootFrame, "'Select None' was clicked!"));
             mainPanel.getButtonPanel().addAddAnotherClickListener(e -> JOptionPane.showMessageDialog(rootFrame, "'Add Another' was clicked!"));
 
-            mainPanel.getDataPanel().getFreshStartPanel().addLoadFromFileClickListener(e -> JOptionPane.showMessageDialog(rootFrame, "'Load From File' was clicked!"));
-            //mainPanel.getDataPanel().getFreshStartPanel().addLoadFromFileClickListener(e -> mainPanel.getDataPanel().showCardDisplayPanel());
+            //mainPanel.getDataPanel().getFreshStartPanel().addLoadFromFileClickListener(e -> JOptionPane.showMessageDialog(rootFrame, "'Load From File' was clicked!"));
+            mainPanel.getDataPanel().getFreshStartPanel().addLoadFromFileClickListener(e -> mainPanel.getDataPanel().showCardDisplayPanel());
             mainPanel.getDataPanel().getFreshStartPanel().addAddNewClickListener(e -> JOptionPane.showMessageDialog(rootFrame, "'Add New' was clicked!"));
 
+            mainPanel.getDataPanel().getCardDisplayPanel().addCard(new RestaurantCard("WestSide Coffee", "Asiago Bagel", "Coffee"));
+            mainPanel.getDataPanel().getCardDisplayPanel().addCard(new RestaurantCard("Herms Inn", "Greek Skillet", "Cinnamon Swirl Pancake"));
             mainPanel.getDataPanel().getCardDisplayPanel().addCard(new RestaurantCard("WestSide Coffee", "Asiago Bagel", "Coffee"));
             mainPanel.getDataPanel().getCardDisplayPanel().addCard(new RestaurantCard("Herms Inn", "Greek Skillet", "Cinnamon Swirl Pancake"));
 

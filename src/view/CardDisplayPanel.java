@@ -1,33 +1,35 @@
 package view;
 
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.awt.*;
 
 public class CardDisplayPanel extends JPanel implements ICardDisplayPanel {
-    private final List<RestaurantCard> cards;
     private final JScrollPane scrollPane;
     private final JPanel scrollPaneInterior;
 
     public CardDisplayPanel(RestaurantCard... cards) {
-        this.cards = new ArrayList<>(Arrays.asList(cards));
-
         scrollPaneInterior = new JPanel();
         scrollPaneInterior.setLayout(new BoxLayout(scrollPaneInterior, BoxLayout.PAGE_AXIS));
 
-        this.cards.forEach(scrollPaneInterior::add);
+        for(RestaurantCard card : cards)
+        {
+            scrollPaneInterior.add(card);
+            scrollPaneInterior.add(Box.createRigidArea(new Dimension(50, 10)));
+        }
 
         scrollPane = new JScrollPane(scrollPaneInterior);
+        scrollPane.createVerticalScrollBar();
+
+        add(scrollPane);
     }
 
     @Override
     public void addCard(IRestaurantCard card) {
-        cards.add((RestaurantCard) card);
+        scrollPaneInterior.add((RestaurantCard) card);
     }
 
     @Override
-    public boolean removeCard(IRestaurantCard card) {
-        return cards.remove((RestaurantCard) card);
+    public void removeCard(IRestaurantCard card) {
+        scrollPaneInterior.remove((Component) card);
     }
 }
