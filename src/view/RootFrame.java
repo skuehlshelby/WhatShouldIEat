@@ -3,12 +3,13 @@ package view;
 import javax.swing.*;
 import java.awt.*;
 
-public class RootFrame
+public class RootFrame extends JFrame
 {
-    private final JFrame root;
 
-    public RootFrame()
+    public RootFrame(String title)
     {
+        super(title);
+
         try
         {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -17,27 +18,9 @@ public class RootFrame
             e.printStackTrace();
         }
 
-        root = new JFrame("What Should I Eat?");
-        root.getContentPane().setLayout(new GridLayout());
-        root.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        root.setSize(500, 500);
-        root.setLocationRelativeTo(null);
-    }
-
-    public void setContent(JPanel content)
-    {
-        root.getContentPane().removeAll();
-        root.getContentPane().add(content);
-        root.getContentPane().revalidate();
-        root.getContentPane().repaint();
-    }
-
-    public void show()
-    {
-        if(!root.isVisible())
-        {
-            root.setVisible(true);
-            root.getContentPane().repaint();
-        }
+        getContentPane().setLayout(new GridLayout());
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(500, 500);
+        setLocationRelativeTo(null);
     }
 }
