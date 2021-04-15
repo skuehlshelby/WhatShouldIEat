@@ -34,6 +34,5 @@ public class Main {
             rootFrame.pack();
             rootFrame.setVisible(true);
         });
-
     }
 }

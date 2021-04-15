@@ -44,6 +44,14 @@ public class MenuItem implements IValidateSelf {
         return errors;
     }
 
+    public static List<String> isValid(String name, String price) {
+        List<String> errors = new ArrayList<>();
+
+        validatePrice(price).ifPresent(errors::add);
+
+        return errors;
+    }
+
     private Optional<String> validatePrice() {
         if(getPrice().isPresent()) {
             if(getPrice().get().compareTo(BigDecimal.valueOf(0.00)) < 0) {
@@ -52,5 +60,32 @@ public class MenuItem implements IValidateSelf {
         }
 
         return Optional.empty();
+    }
+
+    private static Optional<String> validatePrice(String price) {
+        if(price != null) {
+            try {
+                BigDecimal parsedPrice = BigDecimal.valueOf(Double.parseDouble(price));
+
+                if(parsedPrice.compareTo(BigDecimal.valueOf(0.00)) < 0) {
+                    return Optional.of("Menu item prices must be positive.");
+                }
+            }
+            catch (NumberFormatException numberFormatException) {
+                return Optional.of("Menu item prices must be numeric.");
+            }
+        }
+
+        return Optional.empty();
+    }
+
+    @Override
+    public String toString() {
+        if(getPrice().isPresent()) {
+            return String.format("%s: $%,.2f", getName(), getPrice().get().doubleValue());
+        }
+        else {
+            return getName();
+        }
     }
 }
