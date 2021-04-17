@@ -1,5 +1,5 @@
 package model;
 
-public enum Cuisine
-{
+public enum Cuisine {
+  	Italian, Mediteranian, Fusion, Chinese, Indian, Other
 }
