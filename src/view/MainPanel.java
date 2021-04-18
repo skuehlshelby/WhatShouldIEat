@@ -2,7 +2,7 @@ package view;
 
 import javax.swing.*;
 
-public class MainPanel extends JPanel {
+public class MainPanel extends JPanel implements IMainPanel {
     private final TitlePanel titlePanel;
     private final ButtonPanel buttonPanel;
     private final DataPanel dataPanel;
@@ -17,16 +17,19 @@ public class MainPanel extends JPanel {
         add(dataPanel);
     }
 
+    @Override
     public TitlePanel getTitlePanel()
     {
         return titlePanel;
     }
 
+    @Override
     public IButtonPanel getButtonPanel() {
         return buttonPanel;
     }
 
-    public DataPanel getDataPanel(){
+    @Override
+    public IDataPanel getDataPanel(){
         return dataPanel;
     }
 }

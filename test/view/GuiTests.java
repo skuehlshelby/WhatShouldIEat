@@ -1,8 +1,11 @@
 package view;
 
+import model.Cuisine;
 import org.junit.jupiter.api.Test;
 import javax.swing.*;
 import java.awt.*;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -80,5 +83,11 @@ class GuiTests
 
         CardLayout c = (CardLayout) cardPanel.getLayout();
         c.show(cardPanel, "CardDisplayPanel");
+    }
+
+    @Test
+    void showRestaurantDialog() {
+        NewRestaurantDialog restaurantDialog = new NewRestaurantDialog(Arrays.stream(Cuisine.values()).map(Cuisine::toString).toArray(String[]::new));
+        restaurantDialog.display();
     }
 }

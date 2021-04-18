@@ -168,8 +168,7 @@ public class MenuItemDialog extends JDialog implements IMenuItemDialog {
 
     @Override
     public void display() {
-        Dimension dimension = new Dimension(400, 200);
-        setSize(dimension);
+        setSize(getPreferredSize());
         setVisible(true);
     }
 

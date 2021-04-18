@@ -8,13 +8,13 @@ import java.util.Optional;
 public class MenuItem implements IValidateSelf {
 
     private String name;
-    private BigDecimal price;
+    private Double price;
 
     public MenuItem(String name) {
         this(name, null);
     }
 
-    public MenuItem(String name, BigDecimal price) {
+    public MenuItem(String name, Double price) {
         this.name = name;
         this.price = price;
     }
@@ -27,11 +27,11 @@ public class MenuItem implements IValidateSelf {
         this.name = name;
     }
 
-    public Optional<BigDecimal> getPrice() {
+    public Optional<Double> getPrice() {
         return Optional.ofNullable(price);
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
@@ -44,7 +44,7 @@ public class MenuItem implements IValidateSelf {
         return errors;
     }
 
-    public static List<String> isValid(String name, String price) {
+    public static List<String> validate(String name, String price) {
         List<String> errors = new ArrayList<>();
 
         validatePrice(price).ifPresent(errors::add);
@@ -54,7 +54,7 @@ public class MenuItem implements IValidateSelf {
 
     private Optional<String> validatePrice() {
         if(getPrice().isPresent()) {
-            if(getPrice().get().compareTo(BigDecimal.valueOf(0.00)) < 0) {
+            if(getPrice().get().compareTo(0.00) < 0) {
                 return Optional.of("Menu item prices must be positive.");
             }
         }
@@ -65,9 +65,9 @@ public class MenuItem implements IValidateSelf {
     private static Optional<String> validatePrice(String price) {
         if(price != null) {
             try {
-                BigDecimal parsedPrice = BigDecimal.valueOf(Double.parseDouble(price));
+                Double parsedPrice = Double.parseDouble(price);
 
-                if(parsedPrice.compareTo(BigDecimal.valueOf(0.00)) < 0) {
+                if(parsedPrice.compareTo(0.00) < 0) {
                     return Optional.of("Menu item prices must be positive.");
                 }
             }
@@ -82,7 +82,7 @@ public class MenuItem implements IValidateSelf {
     @Override
     public String toString() {
         if(getPrice().isPresent()) {
-            return String.format("%s: $%,.2f", getName(), getPrice().get().doubleValue());
+            return String.format("%s: $%,.2f", getName(), getPrice().get());
         }
         else {
             return getName();

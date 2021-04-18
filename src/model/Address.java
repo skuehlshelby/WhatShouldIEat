@@ -1,15 +1,32 @@
 package model;
 
+import model.validation.FixedLength;
+import model.validation.GreaterThan;
+import model.validation.IValidate;
+import model.validation.LessThan;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class Address implements IValidateSelf {
 
     private String street;
     private String city;
     private String state;
+    private final List<IValidate<String>> stateValidation;
     private Integer zip;
+    private final List<IValidate<Double>> zipCodeValidation;
+
+    public Address() {
+        zipCodeValidation = new ArrayList<>();
+        zipCodeValidation.add(new GreaterThan(10000.00));
+        zipCodeValidation.add(new LessThan(99999.00));
+
+        stateValidation = new ArrayList<>();
+        stateValidation.add(new FixedLength(2));
+    }
 
     public Optional<String> getStreet() {
         return Optional.ofNullable(street);
@@ -45,31 +62,18 @@ public class Address implements IValidateSelf {
 
     @Override
     public List<String> isValid() {
-        List<String> errors = new ArrayList<>();
+        List<String> zipCodeErrors = zipCodeValidation.stream()
+                .filter(item -> item.isValid(zip.doubleValue()).isError())
+                .map(Object::toString)
+                .collect(Collectors.toList());
 
-        validateZip().ifPresent(errors::add);
-        validateState().ifPresent(errors::add);
+        List<String> stateErrors = stateValidation.stream()
+                .filter(item -> item.isValid(state).isError())
+                .map(Object::toString)
+                .collect(Collectors.toList());
 
-        return errors;
-    }
+        zipCodeErrors.addAll(stateErrors);
 
-    private Optional<String> validateZip(){
-        if(getZip().isPresent()) {
-            if(getZip().get() < 10000 || getZip().get() > 99999) {
-                return Optional.of("Zip codes must be five digits.");
-            }
-        }
-
-        return Optional.empty();
-    }
-
-    private Optional<String> validateState(){
-        if(getState().isPresent()) {
-            if(getState().get().length() != 2) {
-                return Optional.of("States must be abbreviated as two letters.");
-            }
-        }
-
-        return Optional.empty();
+        return zipCodeErrors;
     }
 }

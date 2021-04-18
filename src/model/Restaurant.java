@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class Restuarant {
+public class Restaurant {
 	private String name;
 	private Cuisine cuisine;
 	private Address address;
@@ -61,7 +61,7 @@ public class Restuarant {
 	
 	/**
   *****************************************************RETURN TYPE IN UML - MenuItem - RETURN SAME ITEM SENT IN FOR CLARIFICATION TO USER?
-	 * @param menuItems
+	 * @param item
 	 */
 	public MenuItem addMenuItem(MenuItem item) {
 		menuItems.add(item);
@@ -77,7 +77,4 @@ public class Restuarant {
 
         return errors;
     }
-	
-	
-
 }
