@@ -87,7 +87,7 @@ class GuiTests
 
     @Test
     void showRestaurantDialog() {
-        NewRestaurantDialog restaurantDialog = new NewRestaurantDialog(Arrays.stream(Cuisine.values()).map(Cuisine::toString).toArray(String[]::new));
+        NewRestaurantDialog restaurantDialog = new NewRestaurantDialog(null, Arrays.stream(Cuisine.values()).map(Cuisine::toString).toArray(String[]::new));
         restaurantDialog.display();
     }
 }

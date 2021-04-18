@@ -8,7 +8,7 @@ public class FixedLength implements IValidate<String> {
     }
 
     @Override
-    public Result<String> isValid(String item) {
-        return item.length() == requiredLength ? Result.ok(item) : Result.error(String.format("Item must be %d characters long.", requiredLength));
+    public Result<String> validate(String item) {
+        return item != null && item.length() == requiredLength ? Result.ok(item) : Result.error(String.format("Item must be %d characters long.", requiredLength));
     }
 }

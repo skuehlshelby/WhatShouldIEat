@@ -1,15 +1,26 @@
 package model;
 
+import model.validation.IValidate;
+import model.validation.NotEmpty;
+import model.validation.Result;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class Restaurant {
 	private String name;
+	private final List<IValidate<String>> nameValidation;
 	private Cuisine cuisine;
 	private Address address;
 	private List<MenuItem>menuItems;
-	
+
+	public Restaurant() {
+		nameValidation = new ArrayList<>();
+		nameValidation.add(new NotEmpty());
+	}
+
 	/**
 	 * @return the name
 	 */
@@ -73,8 +84,11 @@ public class Restaurant {
 	 * @return the errors
 	 */
 	public List<String> isValid() {
-        List<String> errors = new ArrayList<>();
 
-        return errors;
+        return nameValidation.stream()
+				.map(item -> item.validate(name))
+				.filter(Result::isError)
+				.map(Result::toString)
+				.collect(Collectors.toList());
     }
 }

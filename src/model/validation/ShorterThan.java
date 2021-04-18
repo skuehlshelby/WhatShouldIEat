@@ -8,7 +8,7 @@ public class ShorterThan implements IValidate<String> {
     }
 
     @Override
-    public Result<String> isValid(String item) {
-        return item.length() <= maxLength ? Result.ok(item) : Result.error(String.format("Item cannot be more than %d characters.", maxLength));
+    public Result<String> validate(String item) {
+        return item != null && item.length() <= maxLength ? Result.ok(item) : Result.error(String.format("Item cannot be more than %d characters.", maxLength));
     }
 }

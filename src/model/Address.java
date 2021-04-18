@@ -1,9 +1,6 @@
 package model;
 
-import model.validation.FixedLength;
-import model.validation.GreaterThan;
-import model.validation.IValidate;
-import model.validation.LessThan;
+import model.validation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,12 +14,12 @@ public class Address implements IValidateSelf {
     private String state;
     private final List<IValidate<String>> stateValidation;
     private Integer zip;
-    private final List<IValidate<Double>> zipCodeValidation;
+    private final List<IValidate<Integer>> zipCodeValidation;
 
     public Address() {
         zipCodeValidation = new ArrayList<>();
-        zipCodeValidation.add(new GreaterThan(10000.00));
-        zipCodeValidation.add(new LessThan(99999.00));
+        zipCodeValidation.add(new GreaterThan<>(9999));
+        zipCodeValidation.add(new LessThan<>(99999));
 
         stateValidation = new ArrayList<>();
         stateValidation.add(new FixedLength(2));
@@ -63,13 +60,15 @@ public class Address implements IValidateSelf {
     @Override
     public List<String> isValid() {
         List<String> zipCodeErrors = zipCodeValidation.stream()
-                .filter(item -> item.isValid(zip.doubleValue()).isError())
-                .map(Object::toString)
+                .map(item -> item.validate(zip))
+                .filter(Result::isError)
+                .map(Result::toString)
                 .collect(Collectors.toList());
 
         List<String> stateErrors = stateValidation.stream()
-                .filter(item -> item.isValid(state).isError())
-                .map(Object::toString)
+                .map(item -> item.validate(state))
+                .filter(Result::isError)
+                .map(Result::toString)
                 .collect(Collectors.toList());
 
         zipCodeErrors.addAll(stateErrors);

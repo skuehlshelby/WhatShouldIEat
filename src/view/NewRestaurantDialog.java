@@ -29,7 +29,9 @@ public class NewRestaurantDialog extends JDialog implements INewRestaurantDialog
     private final JButton cancel;
     private boolean cancelled;
 
-    public NewRestaurantDialog(String... cuisineChoices) {
+    public NewRestaurantDialog(JFrame parent, String... cuisineChoices) {
+        super(parent);
+
         timer = new Timer();
         events = new EventListenerList();
         cancelled = true;
@@ -74,7 +76,7 @@ public class NewRestaurantDialog extends JDialog implements INewRestaurantDialog
         errorDisplay.setHorizontalAlignment(SwingConstants.CENTER);
         errorDisplay.setOpaque(true);
         errorDisplay.setBackground(Color.RED);
-        errorDisplay.setForeground(Color.RED.darker());
+        errorDisplay.setForeground(Color.RED.darker().darker());
         errorDisplay.setVisible(false);
         add(errorDisplay, new GridBagConstraintBuilder(0, 0).fillHorizontally().spanXNumberOfColumns(5).build());
 
@@ -225,7 +227,7 @@ public class NewRestaurantDialog extends JDialog implements INewRestaurantDialog
         Object[] listeners = events.getListenerList();
 
         for (int i = 0; i < listeners.length; i+=2) {
-            if(listeners[i] == INewRestaurantDialog.class) {
+            if(listeners[i] == IRestaurantDialogChangeEventListener.class) {
                 ((IRestaurantDialogChangeEventListener) listeners[i + 1])
                         .onChange(new RestaurantDialogChangeEvent(this,
                                 getRestaurantName().orElse(null),

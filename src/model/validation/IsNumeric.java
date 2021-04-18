@@ -2,7 +2,7 @@ package model.validation;
 
 public class IsNumeric implements IValidate<String> {
     @Override
-    public Result<String> isValid(String item) {
+    public Result<String> validate(String item) {
         try{
             Double.parseDouble(item);
             return Result.ok(item);
