@@ -18,7 +18,7 @@ public class Restaurant {
 
 	public Restaurant() {
 		nameValidation = new ArrayList<>();
-		nameValidation.add(new NotEmpty());
+		nameValidation.add(new NotEmpty("Restaurants must have a name."));
 	}
 
 	/**
@@ -83,7 +83,7 @@ public class Restaurant {
 	 * ***************************************************WHAT ITEMS NEED VALIDATION 
 	 * @return the errors
 	 */
-	public List<String> isValid() {
+	public List<String> getErrors() {
 
         return nameValidation.stream()
 				.map(item -> item.validate(name))

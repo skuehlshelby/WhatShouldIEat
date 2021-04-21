@@ -18,11 +18,11 @@ public class Address implements IValidateSelf {
 
     public Address() {
         zipCodeValidation = new ArrayList<>();
-        zipCodeValidation.add(new GreaterThan<>(9999));
-        zipCodeValidation.add(new LessThan<>(99999));
+        zipCodeValidation.add(new GreaterThan<>(9999, "Zip codes must be greater than 9999."));
+        zipCodeValidation.add(new LessThan<>(99999, "Zip codes must be less than 99999."));
 
         stateValidation = new ArrayList<>();
-        stateValidation.add(new FixedLength(2));
+        stateValidation.add(new FixedLength(2, "State abbreviations must be two letters."));
     }
 
     public Optional<String> getStreet() {
@@ -58,7 +58,7 @@ public class Address implements IValidateSelf {
     }
 
     @Override
-    public List<String> isValid() {
+    public List<String> getErrors() {
         List<String> zipCodeErrors = zipCodeValidation.stream()
                 .map(item -> item.validate(zip))
                 .filter(Result::isError)

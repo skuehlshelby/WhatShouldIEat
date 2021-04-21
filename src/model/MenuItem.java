@@ -1,6 +1,5 @@
 package model;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -36,7 +35,7 @@ public class MenuItem implements IValidateSelf {
     }
 
     @Override
-    public List<String> isValid() {
+    public List<String> getErrors() {
         List<String> errors = new ArrayList<>();
 
         validatePrice().ifPresent(errors::add);

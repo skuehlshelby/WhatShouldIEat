@@ -1,6 +1,11 @@
 package model.validation;
 
 public class NotEmpty implements IValidate<String> {
+    private final String errorMessage;
+
+    public NotEmpty(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
 
     @Override
     public Result<String> validate(String item) {

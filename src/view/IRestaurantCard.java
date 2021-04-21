@@ -11,6 +11,10 @@ public interface IRestaurantCard
 
     List<String> getRestaurantItems();
 
+    void setSelected(boolean selected);
+
+    boolean getSelected();
+
     void addRestaurantItem(String item);
 
     void removeRestaurantItem(String item);

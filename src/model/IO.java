@@ -2,50 +2,123 @@ package model;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.XStreamException;
+import com.thoughtworks.xstream.converters.collections.CollectionConverter;
+import com.thoughtworks.xstream.io.xml.DomDriver;
+import com.thoughtworks.xstream.mapper.ArrayMapper;
+import com.thoughtworks.xstream.persistence.FilePersistenceStrategy;
+import com.thoughtworks.xstream.persistence.PersistenceStrategy;
+import com.thoughtworks.xstream.persistence.XmlArrayList;
+import com.thoughtworks.xstream.security.NoTypePermission;
+import com.thoughtworks.xstream.security.NullPermission;
+import com.thoughtworks.xstream.security.PrimitiveTypePermission;
+import controller.Main;
+import model.validation.FixedLength;
+import model.validation.GreaterThan;
+import model.validation.LessThan;
+import model.validation.NotEmpty;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import view.MainPanel;
+
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.awt.*;
+import java.io.*;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class IO
-{
-    public static List<Restaurant> loadFromFile()
-    {
-        UserPrefs prefs = new UserPrefs();
+public class IO {
 
-        if(prefs.getRestaurantDataLocation().isPresent())
-        {
-            try
-            {
-                XStream xStream = new XStream();
+    public static Optional<List<Restaurant>> loadFromFile(String file) {
 
-                Object restaurantData = xStream.fromXML(Paths.get(prefs.getRestaurantDataLocation().get()).toFile());
+        XStream xstream = getConfiguredXMLStream();
+        List<Restaurant> restaurants = new ArrayList<>();
 
-                if(restaurantData instanceof List<?>)
-                {
-                    List<?> asList = (List<?>)restaurantData;
-
-                    if(asList.stream().allMatch(item -> item instanceof Restaurant))
-                    {
-                        return asList.stream().map(Restaurant.class::cast).collect(Collectors.toList());
-                    }
-                }
-
-                return new ArrayList<>();
+        try (ObjectInputStream inputStream = xstream.createObjectInputStream(new FileInputStream(file))) {
+            while(true) {
+                restaurants.add((Restaurant) inputStream.readObject());
             }
-            catch(XStreamException e)
-            {
-                System.out.printf("%s: %s\n", e.getClass().getSimpleName(), e.getMessage());
-            }
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
         }
 
-        return new ArrayList<>();
+        if(restaurants.isEmpty()) {
+            return Optional.empty();
+        }
+        else {
+            return Optional.of(restaurants);
+        }
     }
 
-    public static void writeToFile(String filePath, List<Restaurant> restaurants)
+    public static void writeToFile(String file, List<Restaurant> restaurants)
     {
-        throw new NotImplementedException();
+        XStream xstream = getConfiguredXMLStream();
+
+        try (ObjectOutputStream objectOutputStream = xstream.createObjectOutputStream(new FileOutputStream(file))) {
+            for (Restaurant restaurant : restaurants) {
+                objectOutputStream.writeObject(restaurant);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static XStream getConfiguredXMLStream() {
+        XStream xstream = new XStream(new DomDriver());
+        xstream.addPermission(NoTypePermission.NONE);
+        xstream.addPermission(NullPermission.NULL);
+        xstream.addPermission(PrimitiveTypePermission.PRIMITIVES);
+        xstream.allowTypeHierarchy(Collection.class);
+        xstream.allowTypes(getAllowedClassesForSerialization());
+        xstream.allowTypesByWildcard( new String[] {
+                Main.class.getPackage().getName() + ".*",
+                IO.class.getPackage().getName() + ".*",
+                MainPanel.class.getPackage().getName() + ".*",
+                Restaurant.class.getPackage().getName() + ".*"
+        });
+
+        return xstream;
+    }
+
+    private static Class[] getAllowedClassesForSerialization() {
+        return new Class[] {
+                java.util.ArrayList.class,
+                java.util.List.class,
+                Restaurant.class,
+                NotEmpty.class,
+                FixedLength.class,
+                GreaterThan.class,
+                LessThan.class,
+                Address.class
+        };
+    }
+
+    public static Optional<File> promptUserForFileLocation(Component parent) {
+        JFileChooser fileChooser = new JFileChooser();
+        FileNameExtensionFilter fileNameExtensionFilter = new FileNameExtensionFilter("XML files", "xml");
+        fileChooser.addChoosableFileFilter(fileNameExtensionFilter);
+        fileChooser.setFileFilter(fileNameExtensionFilter);
+        fileChooser.setDialogTitle("What Should I Eat?");
+
+        if(fileChooser.showOpenDialog(parent) == JFileChooser.APPROVE_OPTION) {
+            return Optional.of(fileChooser.getSelectedFile());
+        }
+        else {
+            return Optional.empty();
+        }
+    }
+
+    public static Optional<String> getUserPreferredRestaurantDataLocation() {
+        return getUserPreferences().getRestaurantDataLocation();
+    }
+
+    public static void setUserPreferredRestaurantDataLocation(String location) {
+        getUserPreferences().setRestaurantDataLocation(location);
+
+        getUserPreferences().store();
     }
 
     private static UserPrefs getUserPreferences()

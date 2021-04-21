@@ -1,6 +1,7 @@
 package view;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class MainPanel extends JPanel implements IMainPanel {
     private final TitlePanel titlePanel;
@@ -12,9 +13,15 @@ public class MainPanel extends JPanel implements IMainPanel {
         buttonPanel = new ButtonPanel();
         dataPanel = new DataPanel();
 
-        add(titlePanel);
-        add(buttonPanel);
-        add(dataPanel);
+        setupLayout();
+    }
+
+    private void setupLayout() {
+        setLayout(new GridBagLayout());
+
+        add(titlePanel, new GridBagConstraintBuilder(0, 0).fillHorizontally().spanXNumberOfColumns(2).rowWeight(GridBagConstraintBuilder.TINY).build());
+        add(buttonPanel, new GridBagConstraintBuilder(0, 1).build());
+        add(dataPanel, new GridBagConstraintBuilder(1, 1).build());
     }
 
     @Override

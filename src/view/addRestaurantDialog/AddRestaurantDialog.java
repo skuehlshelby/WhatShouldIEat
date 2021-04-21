@@ -1,5 +1,7 @@
-package view;
+package view.addRestaurantDialog;
 
+import view.GridBagConstraintBuilder;
+import view.GuiHelpers;
 import javax.swing.*;
 import javax.swing.event.EventListenerList;
 import java.awt.*;
@@ -9,7 +11,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.stream.Collectors;
 
-public class NewRestaurantDialog extends JDialog implements INewRestaurantDialog {
+public class AddRestaurantDialog extends JDialog implements IAddRestaurantDialog {
     private final EventListenerList events;
     private final Timer timer;
     private final JLabel errorDisplay;
@@ -17,7 +19,7 @@ public class NewRestaurantDialog extends JDialog implements INewRestaurantDialog
     private final JLabel cuisineLabel;
     private final JLabel addressLabel;
     private final JTextField name;
-    private final JComboBox cuisine;
+    private final JComboBox<String> cuisine;
     private final JTextField street;
     private final JTextField city;
     private final JTextField state;
@@ -29,7 +31,7 @@ public class NewRestaurantDialog extends JDialog implements INewRestaurantDialog
     private final JButton cancel;
     private boolean cancelled;
 
-    public NewRestaurantDialog(JFrame parent, String... cuisineChoices) {
+    public AddRestaurantDialog(JFrame parent, String... cuisineChoices) {
         super(parent);
 
         timer = new Timer();
@@ -115,41 +117,15 @@ public class NewRestaurantDialog extends JDialog implements INewRestaurantDialog
     }
 
     private void registerEvents() {
-        okay.addActionListener(this::okayClick);
-        cancel.addActionListener(this::cancelClick);
+        okay.addActionListener(this::onOkayClick);
+        cancel.addActionListener(this::onCancelClick);
 
-        name.addActionListener(this::fireChangeEvents);
-        cuisine.addActionListener(this::fireChangeEvents);
-        street.addActionListener(this::fireChangeEvents);
-        city.addActionListener(this::fireChangeEvents);
-        state.addActionListener(this::fireChangeEvents);
-        zip.addActionListener(this::fireChangeEvents);
-    }
-
-    private void cancelClick(ActionEvent e) {
-        cancelled = true;
-        setVisible(false);
-    }
-
-    private void okayClick(ActionEvent e) {
-        cancelled = false;
-        setVisible(false);
-    }
-
-    @Override
-    public void display() {
-        setSize(getPreferredSize());
-        setVisible(true);
-    }
-
-    @Override
-    public void addChangeListener(IRestaurantDialogChangeEventListener listener) {
-        events.add(IRestaurantDialogChangeEventListener.class, listener);
-    }
-
-    @Override
-    public void removeChangeListener(IRestaurantDialogChangeEventListener listener) {
-        events.remove(IRestaurantDialogChangeEventListener.class, listener);
+        name.addActionListener(e -> onNameChange(name.getText()));
+        cuisine.addActionListener(e -> onCuisineChange((String) cuisine.getSelectedItem()));
+        street.addActionListener(e -> onStreetChange(street.getText()));
+        city.addActionListener(e -> onCityChange(city.getText()));
+        state.addActionListener(e -> onStateChange(state.getText()));
+        zip.addActionListener(e -> onZipChange(zip.getText()));
     }
 
     @Override
@@ -164,7 +140,7 @@ public class NewRestaurantDialog extends JDialog implements INewRestaurantDialog
 
     @Override
     public Optional<String> getRestaurantName() {
-        return name.getText().length() == 0 ? Optional.empty() : Optional.of(name.getText());
+        return Optional.ofNullable(name.getText());
     }
 
     @Override
@@ -174,22 +150,119 @@ public class NewRestaurantDialog extends JDialog implements INewRestaurantDialog
 
     @Override
     public Optional<String> getStreet() {
-        return street.getText().length() == 0 ? Optional.empty() : Optional.of(street.getText());
+        return Optional.ofNullable(street.getText());
     }
 
     @Override
     public Optional<String> getCity() {
-        return city.getText().length() == 0 ? Optional.empty() : Optional.of(city.getText());
+        return Optional.ofNullable(city.getText());
     }
 
     @Override
     public Optional<String> getState() {
-        return state.getText().length() == 0 ? Optional.empty() : Optional.of(state.getText());
+        return Optional.ofNullable(state.getText());
     }
 
     @Override
     public Optional<String> getZip() {
-        return zip.getText().length() == 0 ? Optional.empty() : Optional.of(zip.getText());
+        return Optional.ofNullable(zip.getText());
+    }
+
+    @Override
+    public void addRestaurantDialogListener(IAddRestaurantDialogListener listener) {
+        events.add(IAddRestaurantDialogListener.class, listener);
+    }
+
+    @Override
+    public void removeRestaurantDialogListener(IAddRestaurantDialogListener listener) {
+        events.remove(IAddRestaurantDialogListener.class, listener);
+    }
+
+    private void onNameChange(String newName) {
+        Object[] listeners = events.getListenerList();
+
+        for (int i = 0; i < listeners.length; i+=2) {
+            if(listeners[i] == IAddRestaurantDialogListener.class) {
+                ((IAddRestaurantDialogListener) listeners[i + 1]).nameChanged(this, newName);
+            }
+        }
+    }
+
+    private void onCuisineChange(String newCuisine) {
+        Object[] listeners = events.getListenerList();
+
+        for (int i = 0; i < listeners.length; i+=2) {
+            if(listeners[i] == IAddRestaurantDialogListener.class) {
+                ((IAddRestaurantDialogListener) listeners[i + 1]).cuisineChanged(this, newCuisine);
+            }
+        }
+    }
+
+    private void onStreetChange(String newStreet) {
+        Object[] listeners = events.getListenerList();
+
+        for (int i = 0; i < listeners.length; i+=2) {
+            if(listeners[i] == IAddRestaurantDialogListener.class) {
+                ((IAddRestaurantDialogListener) listeners[i + 1]).streetChanged(this, newStreet);
+            }
+        }
+    }
+
+    private void onCityChange(String newCity) {
+        Object[] listeners = events.getListenerList();
+
+        for (int i = 0; i < listeners.length; i+=2) {
+            if(listeners[i] == IAddRestaurantDialogListener.class) {
+                ((IAddRestaurantDialogListener) listeners[i + 1]).cityChanged(this, newCity);
+            }
+        }
+    }
+
+    private void onStateChange(String newState) {
+        Object[] listeners = events.getListenerList();
+
+        for (int i = 0; i < listeners.length; i+=2) {
+            if(listeners[i] == IAddRestaurantDialogListener.class) {
+                ((IAddRestaurantDialogListener) listeners[i + 1]).stateChanged(this, newState);
+            }
+        }
+    }
+
+    private void onZipChange(String newZip) {
+        Object[] listeners = events.getListenerList();
+
+        for (int i = 0; i < listeners.length; i+=2) {
+            if(listeners[i] == IAddRestaurantDialogListener.class) {
+                ((IAddRestaurantDialogListener) listeners[i + 1]).zipChanged(this, newZip);
+            }
+        }
+    }
+
+    private void onCancelClick(ActionEvent e) {
+        cancelled = true;
+        setVisible(false);
+    }
+
+    private void onOkayClick(ActionEvent e) {
+        cancelled = false;
+        setVisible(false);
+    }
+
+    @Override
+    public void display() {
+        setSize(getPreferredSize());
+        setVisible(true);
+    }
+
+    @Override
+    public void addMenuItem(String item) {
+        if(items.isEmpty()) {
+            itemDisplayPanel.removeAll();
+        }
+
+        JLabel newItem = new JLabel(item);
+        items.add(newItem);
+        itemDisplayPanel.add(newItem);
     }
 
     @Override
@@ -210,35 +283,6 @@ public class NewRestaurantDialog extends JDialog implements INewRestaurantDialog
                 errorDisplay.setVisible(false);
             }
         }, 3000);
-    }
-
-    @Override
-    public void addMenuItem(String item) {
-        if(items.isEmpty()) {
-            itemDisplayPanel.removeAll();
-        }
-
-        JLabel newItem = new JLabel(item);
-        items.add(newItem);
-        itemDisplayPanel.add(newItem);
-    }
-
-    private void fireChangeEvents(ActionEvent e) {
-        Object[] listeners = events.getListenerList();
-
-        for (int i = 0; i < listeners.length; i+=2) {
-            if(listeners[i] == IRestaurantDialogChangeEventListener.class) {
-                ((IRestaurantDialogChangeEventListener) listeners[i + 1])
-                        .onChange(new RestaurantDialogChangeEvent(this,
-                                getRestaurantName().orElse(null),
-                                getCuisine().orElse(null),
-                                getStreet().orElse(null),
-                                getCity().orElse(null),
-                                getState().orElse(null),
-                                getZip().orElse(null),
-                                getMenuItems()));
-            }
-        }
     }
 
     @Override

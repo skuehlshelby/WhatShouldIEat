@@ -19,24 +19,6 @@ public class GuiHelpers {
         }
     }
 
-    public static GridBagConstraints getConstraints(int row, int column) {
-        return getConstraints(row, column, GridWeight.REGULAR, GridWeight.REGULAR);
-    }
-
-    public static GridBagConstraints getConstraints(int row, int column, GridWeight rowWeight) {
-        return getConstraints(row, column, rowWeight, GridWeight.REGULAR);
-    }
-
-    public static GridBagConstraints getConstraints(int row, int column, GridWeight rowWeight, GridWeight columnWeight) {
-        GridBagConstraints constraints = new GridBagConstraints();
-        constraints.gridy = row;
-        constraints.gridx = column;
-        constraints.weighty = rowWeight.getSize();
-        constraints.weightx = columnWeight.getSize();
-
-        return constraints;
-    }
-
     public static JLabel getLabel(String label) {
         return new JLabel(label);
     }
@@ -60,14 +42,14 @@ public class GuiHelpers {
         return textField;
     }
 
-    public static JComboBox getComboBox(String...comboBoxItems) {
-        JComboBox comboBox = new JComboBox(comboBoxItems);
+    public static JComboBox<String> getComboBox(String...comboBoxItems) {
+        JComboBox<String> comboBox = new JComboBox<>(comboBoxItems);
         ((JLabel)comboBox.getRenderer()).setHorizontalAlignment(JLabel.CENTER);
         return comboBox;
     }
 
-    public static JComboBox getComboBox(int width, String...comboBoxItems) {
-        JComboBox comboBox = new JComboBox(comboBoxItems);
+    public static JComboBox<String> getComboBox(int width, String...comboBoxItems) {
+        JComboBox<String> comboBox = new JComboBox(comboBoxItems);
         ((JLabel)comboBox.getRenderer()).setHorizontalAlignment(JLabel.CENTER);
         char[] chars = new char[width];
         Arrays.fill(chars, 'Q');

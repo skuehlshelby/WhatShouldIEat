@@ -44,6 +44,16 @@ public class RestaurantCard extends JPanel implements IRestaurantCard {
     }
 
     @Override
+    public void setSelected(boolean selected) {
+        this.selected.setSelected(selected);
+    }
+
+    @Override
+    public boolean getSelected() {
+        return this.selected.isSelected();
+    }
+
+    @Override
     public void addRestaurantItem(String item) {
         items.add(new JLabel(item));
     }

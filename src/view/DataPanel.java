@@ -1,5 +1,8 @@
 package view;
 
+import view.freshStartPanel.FreshStartPanel;
+import view.freshStartPanel.IFreshStartPanel;
+
 import javax.swing.*;
 import java.awt.*;
 

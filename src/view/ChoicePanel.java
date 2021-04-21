@@ -1,6 +1,7 @@
 package view;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionListener;
 
 public class ChoicePanel extends JPanel implements IChoicePanel {
@@ -11,13 +12,27 @@ public class ChoicePanel extends JPanel implements IChoicePanel {
         choice = new JLabel();
         chooseAgain = new JButton("Choose Again!");
 
-        setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+        setupLayout();
+    }
 
+    private void setupLayout(){
         JPanel panel = new JPanel();
         panel.setBorder(BorderFactory.createTitledBorder("You should eat..."));
         panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
-        panel.add(choice);
 
+        Dimension dimension = choice.getPreferredSize();
+        dimension.setSize(200, 75);
+        choice.setPreferredSize(dimension);
+        choice.setHorizontalAlignment(SwingConstants.CENTER);
+        choice.setVerticalAlignment(SwingConstants.CENTER);
+
+        panel.add(Box.createHorizontalStrut(10));
+        panel.add(choice);
+        panel.add(Box.createHorizontalStrut(10));
+
+        chooseAgain.setHorizontalAlignment(SwingConstants.CENTER);
+
+        setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         add(panel);
         add(chooseAgain);
     }

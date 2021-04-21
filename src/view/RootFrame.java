@@ -23,4 +23,11 @@ public class RootFrame extends JFrame
         setSize(500, 500);
         setLocationRelativeTo(null);
     }
+
+    public void setContent(Component component) {
+        getContentPane().removeAll();
+        getContentPane().add(component);
+        revalidate();
+        repaint();
+    }
 }

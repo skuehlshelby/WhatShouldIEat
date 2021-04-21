@@ -2,9 +2,11 @@ package model.validation;
 
 public class ShorterThan implements IValidate<String> {
     private final int maxLength;
+    private final String errorMessage;
 
-    public ShorterThan(int maxLength) {
+    public ShorterThan(int maxLength, String errorMessage) {
         this.maxLength = maxLength;
+        this.errorMessage = errorMessage;
     }
 
     @Override

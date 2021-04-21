@@ -3,5 +3,5 @@ package model;
 import java.util.List;
 
 public interface IValidateSelf {
-    List<String> isValid();
+    List<String> getErrors();
 }

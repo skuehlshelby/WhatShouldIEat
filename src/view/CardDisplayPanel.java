@@ -2,6 +2,8 @@ package view;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CardDisplayPanel extends JPanel implements ICardDisplayPanel {
     private final JScrollPane scrollPane;
@@ -21,6 +23,19 @@ public class CardDisplayPanel extends JPanel implements ICardDisplayPanel {
         scrollPane.createVerticalScrollBar();
 
         add(scrollPane);
+    }
+
+    @Override
+    public List<RestaurantCard> getCards() {
+        List<RestaurantCard> cards = new ArrayList<>();
+
+        for(Component component : scrollPaneInterior.getComponents()){
+            if(component instanceof RestaurantCard) {
+                cards.add((RestaurantCard) component);
+            }
+        }
+
+        return cards;
     }
 
     @Override

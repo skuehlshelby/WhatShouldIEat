@@ -2,9 +2,11 @@ package model.validation;
 
 public class GreaterThan<T extends Number> implements IValidate<T> {
     private final T minimum;
+    private final String errorMessage;
 
-    public GreaterThan(T minimum) {
+    public GreaterThan(T minimum, String errorMessage) {
         this.minimum = minimum;
+        this.errorMessage = errorMessage;
     }
 
     @Override

@@ -1,5 +1,7 @@
 package view;
 
+import view.freshStartPanel.IFreshStartPanel;
+
 public interface IDataPanel {
     ICardDisplayPanel getCardDisplayPanel();
 

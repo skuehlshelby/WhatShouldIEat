@@ -1,101 +1,134 @@
 package controller;
 
 import model.*;
-import model.validation.IsNumeric;
 import view.*;
+import view.freshStartPanel.IFreshStartPanelListener;
+
+import javax.swing.text.html.Option;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.io.File;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
-public class MainController {
+public class MainController implements IButtonPanelListener, IRestaurantsListener, IFreshStartPanelListener {
     private final RootFrame rootFrame = new RootFrame("What Should I Eat?");
     private final IMainPanel mainPanel = new MainPanel();
     private final IChoicePanel choicePanel = new ChoicePanel();
-
     private final Restaurants restaurants;
 
     public MainController() {
         restaurants = new Restaurants();
 
-        List<Restaurant> restaurantList = IO.loadFromFile();
-        restaurantList.forEach(restaurants::addRestaurant);
+        restaurants.addRestaurantListener(this);
+        mainPanel.getButtonPanel().addButtonPanelListener(this);
+        mainPanel.getDataPanel().getFreshStartPanel().addFreshStartPanelListener(this);
 
-        mainPanel.getButtonPanel().addChooseClickListener(this::onChooseClick);
-        mainPanel.getButtonPanel().addAddAnotherClickListener(this::onAddAnotherClick);
+        WindowListener listener = new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                super.windowClosing(e);
+                onWindowClose();
+            }
+        };
 
-        rootFrame.getContentPane().add((Component) mainPanel);
-    }
+        rootFrame.addWindowListener(listener);
 
-    public void showMainForm() {
-        rootFrame.getContentPane().removeAll();
-        rootFrame.getContentPane().add((Component) mainPanel);
+        IO.getUserPreferredRestaurantDataLocation().flatMap(IO::loadFromFile).ifPresent(data -> {
+            data.forEach(restaurants::addRestaurant);
+        });
+
+        choicePanel.addChooseAgainActionListener(this::onChooseAgainClick);
+
+        showMainForm();
+
         rootFrame.setVisible(true);
     }
 
-    private void onChooseClick(ActionEvent e) {
-        Restaurant choice = restaurants.choose();
-        choicePanel.setChoice(choice.getName());
-        rootFrame.getContentPane().removeAll();
-        rootFrame.getContentPane().add((Component) choicePanel);
-        rootFrame.revalidate();
-        rootFrame.repaint();
+    public void showMainForm() {
+        rootFrame.setContent((Component) mainPanel);
     }
 
-    private void onAddAnotherClick(ActionEvent e) {
-        INewRestaurantDialog restaurantDialog = new NewRestaurantDialog(rootFrame, Arrays.stream(Cuisine.values()).map(Cuisine::toString).toArray(String[]::new));
-        restaurantDialog.addChangeListener(this::validateRestaurantDialog);
+    private void onChooseAgainClick(ActionEvent e) {
+        showMainForm();
+    }
 
-        restaurantDialog.display();
+    @Override
+    public void chooseClicked(Object sender) {
+        List<String> selectedRestaurants = mainPanel
+                .getDataPanel()
+                .getCardDisplayPanel()
+                .getCards()
+                .stream()
+                .filter(RestaurantCard::getSelected)
+                .map(RestaurantCard::getRestaurantName)
+                .collect(Collectors.toList());
 
-        if(!restaurantDialog.isCancelled()) {
-            Restaurant restaurant = new Restaurant();
-            restaurantDialog.getRestaurantName().ifPresent(restaurant::setName);
-            restaurantDialog.getCuisine().ifPresent(cuisine -> restaurant.setCuisine(Cuisine.valueOf(cuisine)));
+        Optional<Restaurant> choice = restaurants.choose(restaurant -> selectedRestaurants.contains(restaurant.getName()));
 
-            restaurants.addRestaurant(restaurant);
-
-            mainPanel.getDataPanel().getCardDisplayPanel().addCard(new RestaurantCard(restaurant.getName()));
-            mainPanel.getDataPanel().showCardDisplayPanel();
+        if(choice.isPresent()) {
+            choicePanel.setChoice(choice.get().getName());
+            rootFrame.getContentPane().removeAll();
+            rootFrame.getContentPane().add((Component) choicePanel);
+            rootFrame.revalidate();
+            rootFrame.repaint();
         }
     }
 
-    private void validateRestaurantDialog(RestaurantDialogChangeEvent e) {
-        Restaurant restaurant = new Restaurant();
-        Address address = new Address();
-        List<String> errors = new ArrayList<>();
+    @Override
+    public void selectAllClicked(Object sender) {
+        for (IRestaurantCard card : mainPanel.getDataPanel().getCardDisplayPanel().getCards()) {
+            card.setSelected(true);
+        }
+    }
 
-        e.getRestaurantName().ifPresent(restaurant::setName);
-        e.getCuisine().ifPresent(cuisine -> restaurant.setCuisine(Cuisine.valueOf(cuisine)));
+    @Override
+    public void selectNoneClicked(Object sender) {
+        for (IRestaurantCard card : mainPanel.getDataPanel().getCardDisplayPanel().getCards()) {
+            card.setSelected(false);
+        }
+    }
 
-        e.getStreet().ifPresent(address::setStreet);
-        e.getCity().ifPresent(address::setCity);
-        e.getState().ifPresent(address::setState);
+    @Override
+    public void addAnotherClicked(Object sender) {
+        NewRestaurantController newRestaurantController = new NewRestaurantController();
 
-        if(e.getZip().isPresent()) {
-            IsNumeric numeric = new IsNumeric();
-            String zip = e.getZip().get();
+        Optional<Restaurant> restaurant = newRestaurantController.getRestaurant(rootFrame);
 
-            if(numeric.validate(zip).isError()) {
-                errors.add(numeric.validate(zip).toString());
-            }
-            else{
-                address.setZip(Integer.parseInt(zip));
-            }
+        restaurant.ifPresent(restaurants::addRestaurant);
+    }
+
+    @Override
+    public void loadFromFileClicked(Object sender) {
+        IO.promptUserForFileLocation(rootFrame).ifPresent(file -> {
+            IO.setUserPreferredRestaurantDataLocation(file.getAbsolutePath());
+            IO.loadFromFile(file.getAbsolutePath()).ifPresent(data -> {
+                data.forEach(restaurants::addRestaurant);
+            });
+        });
+    }
+
+    @Override
+    public void restaurantAdded(Object sender, Restaurant restaurant) {
+        RestaurantCard card = new RestaurantCard(restaurant.getName());
+        mainPanel.getDataPanel().getCardDisplayPanel().addCard(card);
+        mainPanel.getDataPanel().showCardDisplayPanel();
+    }
+
+    @Override
+    public void restaurantRemoved(Object sender, Restaurant restaurant) {
+
+    }
+
+    private void onWindowClose() {
+        if(!IO.getUserPreferredRestaurantDataLocation().isPresent()) {
+            IO.promptUserForFileLocation(rootFrame).ifPresent(location -> IO.setUserPreferredRestaurantDataLocation(location.getAbsolutePath()));
         }
 
-        errors.addAll(address.isValid());
-        errors.addAll(restaurant.isValid());
-
-        INewRestaurantDialog source = (INewRestaurantDialog)e.getSource();
-
-        if(errors.isEmpty()) {
-            source.enableOkay();
-        }
-        else {
-            source.disableOkay();
-            source.displayErrors(errors);
-        }
+        IO.getUserPreferredRestaurantDataLocation().ifPresent(location -> IO.writeToFile(location, restaurants.getRestaurants()));
     }
 }

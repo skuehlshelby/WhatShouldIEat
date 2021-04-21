@@ -2,12 +2,12 @@ package view;
 
 import model.Cuisine;
 import org.junit.jupiter.api.Test;
+import view.addRestaurantDialog.AddRestaurantDialog;
+import view.freshStartPanel.FreshStartPanel;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.Arrays;
-import java.util.stream.Collectors;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class GuiTests
 {
@@ -87,7 +87,7 @@ class GuiTests
 
     @Test
     void showRestaurantDialog() {
-        NewRestaurantDialog restaurantDialog = new NewRestaurantDialog(null, Arrays.stream(Cuisine.values()).map(Cuisine::toString).toArray(String[]::new));
+        AddRestaurantDialog restaurantDialog = new AddRestaurantDialog(null, Arrays.stream(Cuisine.values()).map(Cuisine::toString).toArray(String[]::new));
         restaurantDialog.display();
     }
 }

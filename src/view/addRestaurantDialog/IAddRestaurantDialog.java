@@ -1,14 +1,14 @@
-package view;
+package view.addRestaurantDialog;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface INewRestaurantDialog {
+public interface IAddRestaurantDialog {
     void display();
 
-    void addChangeListener(IRestaurantDialogChangeEventListener listener);
+    void addRestaurantDialogListener(IAddRestaurantDialogListener listener);
 
-    void removeChangeListener(IRestaurantDialogChangeEventListener listener);
+    void removeRestaurantDialogListener(IAddRestaurantDialogListener listener);
 
     void enableOkay();
 
@@ -26,11 +26,11 @@ public interface INewRestaurantDialog {
 
     Optional<String> getZip();
 
+    void addMenuItem(String item);
+
     List<String> getMenuItems();
 
     void displayErrors(List<String> errors);
-
-    void addMenuItem(String item);
 
     boolean isCancelled();
 }

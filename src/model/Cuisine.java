@@ -1,5 +1,15 @@
 package model;
 
 public enum Cuisine {
-  	Italian, Mediterranean, Fusion, Chinese, Indian, Thai, Other
+	American,
+	Brunch,
+	Chinese,
+	Colombian,
+	Fusion,
+	Indian,
+	Italian,
+	Mediterranean,
+	Mexican,
+	Other,
+	Thai
 }

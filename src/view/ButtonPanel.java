@@ -1,18 +1,21 @@
 package view;
 
+import model.IRestaurantsListener;
 import javax.swing.*;
+import javax.swing.event.EventListenerList;
 import java.awt.*;
-import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class ButtonPanel extends JPanel implements IButtonPanel {
 
+    private final EventListenerList events;
     private final JButton choose;
     private final JButton selectAll;
     private final JButton selectNone;
     private final JButton addAnother;
 
     public ButtonPanel() {
-        setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+        events = new EventListenerList();
 
         choose = new JButton("Choose!");
         selectAll = new JButton("Select All");
@@ -24,6 +27,14 @@ public class ButtonPanel extends JPanel implements IButtonPanel {
         selectNone.setHorizontalAlignment(SwingConstants.CENTER);
         addAnother.setHorizontalAlignment(SwingConstants.CENTER);
 
+        setupLayout();
+
+        registerEvents();
+    }
+
+    private void setupLayout(){
+        setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+
         Dimension dimension = new Dimension(50, 10);
         add(Box.createHorizontalStrut(10));
         add(choose);
@@ -34,45 +45,48 @@ public class ButtonPanel extends JPanel implements IButtonPanel {
         add(Box.createRigidArea(dimension));
         add(addAnother);
         add(Box.createHorizontalStrut(10));
+        registerEvents();
+    }
+
+    private void registerEvents() {
+        choose.addActionListener(this::onAction);
+        selectAll.addActionListener(this::onAction);
+        selectNone.addActionListener(this::onAction);
+        addAnother.addActionListener(this::onAction);
     }
 
     @Override
-    public void addChooseClickListener(ActionListener listener) {
-        choose.addActionListener(listener);
+    public void addButtonPanelListener(IButtonPanelListener listener) {
+        events.add(IButtonPanelListener.class, listener);
     }
 
     @Override
-    public void removeChooseClickListener(ActionListener listener) {
-        choose.removeActionListener(listener);
+    public void removeButtonPanelListener(IButtonPanelListener listener) {
+        events.remove(IButtonPanelListener.class, listener);
     }
 
-    @Override
-    public void addSelectAllClickListener(ActionListener listener) {
-        selectAll.addActionListener(listener);
-    }
+    private void onAction(ActionEvent e) {
+        Object[] listeners = events.getListenerList();
+        Object source = e.getSource();
 
-    @Override
-    public void removeSelectAllClickListener(ActionListener listener) {
-        selectAll.removeActionListener(listener);
-    }
+        for (int i = 0; i < listeners.length; i+=2) {
+            if(listeners[i + 1] instanceof IButtonPanelListener) {
 
-    @Override
-    public void addSelectNoneClickListener(ActionListener listener) {
-        selectNone.addActionListener(listener);
-    }
+                IButtonPanelListener listener = (IButtonPanelListener) listeners[i + 1];
 
-    @Override
-    public void removeSelectNoneClickListener(ActionListener listener) {
-        selectNone.removeActionListener(listener);
-    }
-
-    @Override
-    public void addAddAnotherClickListener(ActionListener listener) {
-        addAnother.addActionListener(listener);
-    }
-
-    @Override
-    public void removeAddAnotherClickListener(ActionListener listener) {
-        addAnother.removeActionListener(listener);
+                if(source == choose) {
+                    listener.chooseClicked(this);
+                }
+                else if(source == selectAll) {
+                    listener.selectAllClicked(this);
+                }
+                else if(source == selectNone) {
+                    listener.selectNoneClicked(this);
+                }
+                else {
+                    listener.addAnotherClicked(this);
+                }
+            }
+        }
     }
 }

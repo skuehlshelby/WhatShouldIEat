@@ -2,8 +2,6 @@ package model;
 
 import org.junit.jupiter.api.Test;
 
-import java.math.BigDecimal;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class MenuItemTest {
@@ -12,14 +10,14 @@ class MenuItemTest {
     void isValid() {
         MenuItem menuItem = new MenuItem("Asiago Bagel", 2.99);
 
-        assertTrue(menuItem.isValid().isEmpty());
+        assertTrue(menuItem.getErrors().isEmpty());
     }
 
     @Test
     void isNotValid() {
         MenuItem menuItem = new MenuItem("Asiago Bagel", -2.99);
 
-        assertFalse(menuItem.isValid().isEmpty());
+        assertFalse(menuItem.getErrors().isEmpty());
     }
 
     @Test

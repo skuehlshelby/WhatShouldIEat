@@ -40,7 +40,7 @@ public class UserPrefs
     {
         String location = properties.getProperty(restaurantDataLocation);
 
-        return location == null ? Optional.empty() : Optional.of(location);
+        return Optional.ofNullable(location);
     }
 
     public void setRestaurantDataLocation(String location)
