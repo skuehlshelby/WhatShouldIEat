@@ -19,9 +19,10 @@ public class MainPanel extends JPanel implements IMainPanel {
     private void setupLayout() {
         setLayout(new GridBagLayout());
 
+        setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         add(titlePanel, new GridBagConstraintBuilder(0, 0).fillHorizontally().spanXNumberOfColumns(2).rowWeight(GridBagConstraintBuilder.TINY).build());
-        add(buttonPanel, new GridBagConstraintBuilder(0, 1).build());
-        add(dataPanel, new GridBagConstraintBuilder(1, 1).build());
+        add(buttonPanel, new GridBagConstraintBuilder(0, 1).fillVerticallyAndHorizontally().build());
+        add(dataPanel, new GridBagConstraintBuilder(1, 1).fillVerticallyAndHorizontally().build());
     }
 
     @Override

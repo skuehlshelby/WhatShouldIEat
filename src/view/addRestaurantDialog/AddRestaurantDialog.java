@@ -2,6 +2,9 @@ package view.addRestaurantDialog;
 
 import view.GridBagConstraintBuilder;
 import view.GuiHelpers;
+import view.IMenuItemDialog;
+import view.MenuItemDialog;
+
 import javax.swing.*;
 import javax.swing.event.EventListenerList;
 import java.awt.*;
@@ -117,6 +120,7 @@ public class AddRestaurantDialog extends JDialog implements IAddRestaurantDialog
     }
 
     private void registerEvents() {
+        addMenuItem.addActionListener(this::onAddAnotherClick);
         okay.addActionListener(this::onOkayClick);
         cancel.addActionListener(this::onCancelClick);
 
@@ -248,6 +252,17 @@ public class AddRestaurantDialog extends JDialog implements IAddRestaurantDialog
         setVisible(false);
     }
 
+    private void onAddAnotherClick(ActionEvent e) {
+        IMenuItemDialog menuItemDialog = new MenuItemDialog();
+        menuItemDialog.enableOkay();
+        menuItemDialog.display();
+
+
+        if(!menuItemDialog.isCancelled()) {
+            addMenuItem(menuItemDialog.getItemName().orElse(null));
+        }
+    }
+
     @Override
     public void display() {
         setSize(getPreferredSize());
@@ -263,6 +278,8 @@ public class AddRestaurantDialog extends JDialog implements IAddRestaurantDialog
         JLabel newItem = new JLabel(item);
         items.add(newItem);
         itemDisplayPanel.add(newItem);
+        itemDisplayPanel.revalidate();
+        itemDisplayPanel.repaint();
     }
 
     @Override

@@ -22,7 +22,8 @@ public class CardDisplayPanel extends JPanel implements ICardDisplayPanel {
         scrollPane = new JScrollPane(scrollPaneInterior);
         scrollPane.createVerticalScrollBar();
 
-        add(scrollPane);
+        setLayout(new GridBagLayout());
+        add(scrollPane, new GridBagConstraintBuilder(0,0).fillVerticallyAndHorizontally().build());
     }
 
     @Override

@@ -33,19 +33,16 @@ public class ButtonPanel extends JPanel implements IButtonPanel {
     }
 
     private void setupLayout(){
-        setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+        setLayout(new GridBagLayout());
 
-        Dimension dimension = new Dimension(50, 10);
-        add(Box.createHorizontalStrut(10));
-        add(choose);
-        add(Box.createRigidArea(dimension));
-        add(selectAll);
-        add(Box.createRigidArea(dimension));
-        add(selectNone);
-        add(Box.createRigidArea(dimension));
-        add(addAnother);
-        add(Box.createHorizontalStrut(10));
-        registerEvents();
+        add(Box.createHorizontalStrut(10), new GridBagConstraintBuilder(0, 0).rowWeight(GridBagConstraintBuilder.HUGE).fillVertically().build());
+        add(choose, new GridBagConstraintBuilder(0, 1).fillHorizontally().build());
+        add(selectAll, new GridBagConstraintBuilder(0, 2).fillHorizontally().build());
+        add(selectNone, new GridBagConstraintBuilder(0, 3).fillHorizontally().build());
+        add(addAnother, new GridBagConstraintBuilder(0, 4).fillHorizontally().build());
+        add(Box.createHorizontalStrut(10), new GridBagConstraintBuilder(0, 5).rowWeight(GridBagConstraintBuilder.HUGE).fillVertically().build());
+
+        setBorder(BorderFactory.createLineBorder(Color.BLACK, 1, true));
     }
 
     private void registerEvents() {
