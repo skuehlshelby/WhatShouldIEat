@@ -3,6 +3,9 @@ package view.restaurantCard;
 import java.awt.event.ActionListener;
 import java.util.List;
 
+/**
+ * @author Scott Kuehl-Shelby
+ */
 public interface IRestaurantCard
 {
     String getRestaurantName();

@@ -15,6 +15,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * @author Scott Kuehl-Shelby
+ */
 public class MainController implements IButtonPanelListener, IRestaurantsListener, IFreshStartPanelListener {
     private final RootFrame rootFrame = new RootFrame("What Should I Eat?");
     private final IMainPanel mainPanel = new MainPanel();
@@ -38,9 +41,7 @@ public class MainController implements IButtonPanelListener, IRestaurantsListene
 
         rootFrame.addWindowListener(listener);
 
-        IO.getUserPreferredRestaurantDataLocation().flatMap(IO::loadFromFile).ifPresent(data -> {
-            data.forEach(restaurants::addRestaurant);
-        });
+        IO.getUserPreferredRestaurantDataLocation().flatMap(IO::loadFromFile).ifPresent(data -> data.forEach(restaurants::addRestaurant));
 
         choicePanel.addChooseAgainActionListener(this::onChooseAgainClick);
 
@@ -106,9 +107,7 @@ public class MainController implements IButtonPanelListener, IRestaurantsListene
     public void loadFromFileClicked(Object sender) {
         IO.promptUserForFileLocation(rootFrame).ifPresent(file -> {
             IO.setUserPreferredRestaurantDataLocation(file.getAbsolutePath());
-            IO.loadFromFile(file.getAbsolutePath()).ifPresent(data -> {
-                data.forEach(restaurants::addRestaurant);
-            });
+            IO.loadFromFile(file.getAbsolutePath()).ifPresent(data -> data.forEach(restaurants::addRestaurant));
         });
     }
 

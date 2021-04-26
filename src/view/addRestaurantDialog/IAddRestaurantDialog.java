@@ -3,6 +3,9 @@ package view.addRestaurantDialog;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * @author Scott Kuehl-Shelby
+ */
 public interface IAddRestaurantDialog {
     void display();
 

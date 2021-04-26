@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * @author Scott Kuehl-Shelby
+ */
 public class MenuItem implements IValidateSelf {
 
     private String name;

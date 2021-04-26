@@ -2,6 +2,9 @@ package view;
 
 import java.util.EventObject;
 
+/**
+ * @author Scott Kuehl-Shelby
+ */
 public class MenuItemDialogChangeEvent extends EventObject {
 
     private final String menuItemName;

@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * @author Scott Kuehl-Shelby
+ */
 public class Address implements IValidateSelf {
 
     private String street;

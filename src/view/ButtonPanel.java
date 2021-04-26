@@ -1,11 +1,13 @@
 package view;
 
-import model.IRestaurantsListener;
 import javax.swing.*;
 import javax.swing.event.EventListenerList;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
+/**
+ * @author Scott Kuehl-Shelby
+ */
 public class ButtonPanel extends JPanel implements IButtonPanel {
 
     private final EventListenerList events;

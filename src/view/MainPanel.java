@@ -3,6 +3,9 @@ package view;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * @author Scott Kuehl-Shelby
+ */
 public class MainPanel extends JPanel implements IMainPanel {
     private final TitlePanel titlePanel;
     private final ButtonPanel buttonPanel;

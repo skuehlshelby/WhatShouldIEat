@@ -3,6 +3,9 @@ package view;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * @author Scott Kuehl-Shelby
+ */
 public class TitlePanel extends JPanel {
     private final JLabel title;
 

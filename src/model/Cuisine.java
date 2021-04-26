@@ -1,5 +1,8 @@
 package model;
 
+/**
+ * @author Scott Kuehl-Shelby
+ */
 public enum Cuisine {
 	American,
 	Brunch,

@@ -2,6 +2,9 @@ package view.addRestaurantDialog;
 
 import java.util.EventListener;
 
+/**
+ * @author Scott Kuehl-Shelby
+ */
 public interface IAddRestaurantDialogListener extends EventListener {
     void nameChanged(Object sender, String name);
     void cuisineChanged(Object sender, String cuisine);

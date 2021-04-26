@@ -11,6 +11,9 @@ import view.addRestaurantDialog.AddRestaurantDialog;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * @author Scott Kuehl-Shelby
+ */
 public class NewRestaurantController implements IAddRestaurantDialogListener {
     private Restaurant restaurant;
     private Address address;

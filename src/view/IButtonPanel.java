@@ -1,7 +1,8 @@
 package view;
 
-import java.awt.event.ActionListener;
-
+/**
+ * @author Scott Kuehl-Shelby
+ */
 public interface IButtonPanel {
     void addButtonPanelListener(IButtonPanelListener listener);
 

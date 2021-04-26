@@ -9,6 +9,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * @author Reyes Villalva
+ */
 public class Restaurant {
 	private String name;
 	private final List<IValidate<String>> nameValidation;

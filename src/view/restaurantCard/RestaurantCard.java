@@ -8,6 +8,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * @author Scott Kuehl-Shelby
+ */
 public class RestaurantCard extends JPanel implements IRestaurantCard {
     private final JCheckBox selected;
     private final JButton edit;

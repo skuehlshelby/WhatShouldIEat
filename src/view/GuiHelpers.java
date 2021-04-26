@@ -1,9 +1,11 @@
 package view;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.Arrays;
 
+/**
+ * @author Scott Kuehl-Shelby
+ */
 public class GuiHelpers {
     public enum GridWeight {
         TINY(1), SMALL(2), REGULAR(3), LARGE(4), HUGE(5);
@@ -17,10 +19,6 @@ public class GuiHelpers {
         public int getSize() {
             return size;
         }
-    }
-
-    public static JLabel getLabel(String label) {
-        return new JLabel(label);
     }
 
     public static JTextField getTextField() {

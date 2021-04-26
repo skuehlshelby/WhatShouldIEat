@@ -30,6 +30,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * @author Scott Kuehl-Shelby
+ */
 public class IO {
 
     public static Optional<List<Restaurant>> loadFromFile(String file) {

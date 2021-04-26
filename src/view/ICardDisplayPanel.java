@@ -5,6 +5,9 @@ import view.restaurantCard.RestaurantCard;
 
 import java.util.List;
 
+/**
+ * @author Scott Kuehl-Shelby
+ */
 public interface ICardDisplayPanel {
     List<RestaurantCard> getCards();
 

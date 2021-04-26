@@ -2,12 +2,14 @@ package view;
 
 import view.restaurantCard.IRestaurantCard;
 import view.restaurantCard.RestaurantCard;
-
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Scott Kuehl-Shelby
+ */
 public class CardDisplayPanel extends JPanel implements ICardDisplayPanel {
     private final JScrollPane scrollPane;
     private final List<RestaurantCard> cards;

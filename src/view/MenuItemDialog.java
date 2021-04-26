@@ -9,6 +9,9 @@ import java.util.Optional;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ * @author Scott Kuehl-Shelby
+ */
 public class MenuItemDialog extends JDialog implements IMenuItemDialog {
     private final EventListenerList events;
     private final Timer timer;

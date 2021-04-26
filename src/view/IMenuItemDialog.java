@@ -3,6 +3,9 @@ package view;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * @author Scott Kuehl-Shelby
+ */
 public interface IMenuItemDialog {
     void addChangeListener(IMenuItemDialogChangeEventListener listener);
 

@@ -1,12 +1,14 @@
 package view.freshStartPanel;
 
 import view.GridBagConstraintBuilder;
-
 import javax.swing.*;
 import javax.swing.event.EventListenerList;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
+/**
+ * @author Scott Kuehl-Shelby
+ */
 public class FreshStartPanel extends JPanel implements IFreshStartPanel {
     private final EventListenerList events;
     private final JButton loadFromFile;

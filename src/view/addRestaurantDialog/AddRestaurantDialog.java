@@ -4,7 +4,6 @@ import view.GridBagConstraintBuilder;
 import view.GuiHelpers;
 import view.IMenuItemDialog;
 import view.MenuItemDialog;
-
 import javax.swing.*;
 import javax.swing.event.EventListenerList;
 import java.awt.*;
@@ -14,6 +13,9 @@ import java.util.List;
 import java.util.Timer;
 import java.util.stream.Collectors;
 
+/**
+ * @author Scott Kuehl-Shelby
+ */
 public class AddRestaurantDialog extends JDialog implements IAddRestaurantDialog {
     private final EventListenerList events;
     private final Timer timer;

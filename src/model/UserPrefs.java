@@ -8,6 +8,9 @@ import java.nio.file.Paths;
 import java.util.Optional;
 import java.util.Properties;
 
+/**
+ * @author Scott Kuehl-Shelby
+ */
 public class UserPrefs
 {
     private static final String localStorage = "WhatShouldIEat.Properties";

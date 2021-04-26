@@ -2,6 +2,9 @@ package view;
 
 import java.awt.*;
 
+/**
+ * @author Scott Kuehl-Shelby
+ */
 public class GridBagConstraintBuilder {
     public static final int TINY = 1;
     public static final int SMALL = 2;

@@ -7,8 +7,10 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
+/**
+ * @author Scott Kuehl-Shelby
+ */
 public class Restaurants {
     private final EventListenerList events;
     private final List<Restaurant> restaurants = new ArrayList<>();

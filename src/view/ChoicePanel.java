@@ -4,6 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
+/**
+ * @author Scott Kuehl-Shelby
+ */
 public class ChoicePanel extends JPanel implements IChoicePanel {
     private final JLabel choice;
     private final JButton chooseAgain;

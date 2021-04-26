@@ -2,10 +2,12 @@ package view;
 
 import view.freshStartPanel.FreshStartPanel;
 import view.freshStartPanel.IFreshStartPanel;
-
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * @author Scott Kuehl-Shelby
+ */
 public class DataPanel extends JPanel implements IDataPanel {
     private static final String freshStartPanelName = "Fresh Start Panel";
     private static final String cardDisplayPanelName = "Card Display Panel";
