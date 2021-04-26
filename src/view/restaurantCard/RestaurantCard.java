@@ -1,5 +1,6 @@
-package view;
+package view.restaurantCard;
 
+import view.GridBagConstraintBuilder;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -12,20 +13,34 @@ public class RestaurantCard extends JPanel implements IRestaurantCard {
     private final JButton edit;
     private final JLabel restaurantName;
     private final List<JLabel> items;
-    private final BorderLayout layout;
 
     public RestaurantCard(String name, String... items) {
-        layout = new BorderLayout();
         selected = new JCheckBox();
         edit = new JButton("Edit");
         restaurantName = new JLabel(name);
         this.items = Arrays.stream(items).map(JLabel::new).collect(Collectors.toList());
 
-        setLayout(layout);
-        add(selected, BorderLayout.LINE_START);
-        add(edit, BorderLayout.LINE_END);
-        add(restaurantName, BorderLayout.CENTER);
-        this.items.forEach(item -> add(item, BorderLayout.SOUTH));
+        setupLayout();
+    }
+
+    private void setupLayout() {
+        setLayout(new GridBagLayout());
+        setBorder(BorderFactory.createLineBorder(Color.BLACK));
+
+        restaurantName.setHorizontalAlignment(SwingConstants.CENTER);
+        restaurantName.setHorizontalTextPosition(SwingConstants.CENTER);
+
+        add(selected, new GridBagConstraintBuilder(0, 0).rowWeight(GridBagConstraintBuilder.TINY).columnWeight(GridBagConstraintBuilder.TINY).build());
+        add(restaurantName, new GridBagConstraintBuilder(1, 1).fillHorizontally().build());
+        add(edit, new GridBagConstraintBuilder(2, 0).rowWeight(GridBagConstraintBuilder.TINY).columnWeight(GridBagConstraintBuilder.TINY).build());
+
+        if(!items.isEmpty()) {
+            JPanel itemPanel = new JPanel();
+            itemPanel.setLayout(new BoxLayout(itemPanel, BoxLayout.PAGE_AXIS));
+            items.forEach(itemPanel::add);
+
+            add(itemPanel, new GridBagConstraintBuilder(1, 2).fillHorizontally().build());
+        }
     }
 
     @Override

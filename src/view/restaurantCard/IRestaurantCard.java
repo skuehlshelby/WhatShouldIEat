@@ -1,4 +1,4 @@
-package view;
+package view.restaurantCard;
 
 import java.awt.event.ActionListener;
 import java.util.List;

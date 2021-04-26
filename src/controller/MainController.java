@@ -3,14 +3,14 @@ package controller;
 import model.*;
 import view.*;
 import view.freshStartPanel.IFreshStartPanelListener;
+import view.restaurantCard.IRestaurantCard;
+import view.restaurantCard.RestaurantCard;
 
-import javax.swing.text.html.Option;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.io.File;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;

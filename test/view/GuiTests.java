@@ -4,6 +4,8 @@ import model.Cuisine;
 import org.junit.jupiter.api.Test;
 import view.addRestaurantDialog.AddRestaurantDialog;
 import view.freshStartPanel.FreshStartPanel;
+import view.restaurantCard.IRestaurantCard;
+import view.restaurantCard.RestaurantCard;
 
 import javax.swing.*;
 import java.awt.*;

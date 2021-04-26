@@ -1,5 +1,8 @@
 package view;
 
+import view.restaurantCard.IRestaurantCard;
+import view.restaurantCard.RestaurantCard;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -7,16 +10,18 @@ import java.util.List;
 
 public class CardDisplayPanel extends JPanel implements ICardDisplayPanel {
     private final JScrollPane scrollPane;
+    private final List<RestaurantCard> cards;
     private final JPanel scrollPaneInterior;
 
     public CardDisplayPanel(RestaurantCard... cards) {
+        this.cards = new ArrayList<>();
+
         scrollPaneInterior = new JPanel();
         scrollPaneInterior.setLayout(new BoxLayout(scrollPaneInterior, BoxLayout.PAGE_AXIS));
 
         for(RestaurantCard card : cards)
         {
-            scrollPaneInterior.add(card);
-            scrollPaneInterior.add(Box.createRigidArea(new Dimension(50, 10)));
+            addCard(card);
         }
 
         scrollPane = new JScrollPane(scrollPaneInterior);
@@ -28,24 +33,33 @@ public class CardDisplayPanel extends JPanel implements ICardDisplayPanel {
 
     @Override
     public List<RestaurantCard> getCards() {
-        List<RestaurantCard> cards = new ArrayList<>();
-
-        for(Component component : scrollPaneInterior.getComponents()){
-            if(component instanceof RestaurantCard) {
-                cards.add((RestaurantCard) component);
-            }
-        }
-
         return cards;
     }
 
     @Override
     public void addCard(IRestaurantCard card) {
-        scrollPaneInterior.add((RestaurantCard) card);
+        cards.add((RestaurantCard) card);
+        arrangeCards();
     }
 
     @Override
     public void removeCard(IRestaurantCard card) {
         scrollPaneInterior.remove((Component) card);
+    }
+
+    private void arrangeCards(){
+        scrollPaneInterior.removeAll();
+
+        scrollPaneInterior.add(Box.createVerticalStrut(100));
+
+        for (int card = 0; card < getCards().size(); card++) {
+            scrollPaneInterior.add(getCards().get(card));
+
+            if(card != getCards().size() - 1) {
+                scrollPaneInterior.add(Box.createRigidArea(new Dimension(10, 10)));
+            }
+        }
+
+        scrollPaneInterior.add(Box.createVerticalStrut(100));
     }
 }

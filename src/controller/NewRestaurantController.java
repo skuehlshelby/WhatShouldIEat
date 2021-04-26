@@ -8,7 +8,6 @@ import view.*;
 import view.addRestaurantDialog.IAddRestaurantDialog;
 import view.addRestaurantDialog.IAddRestaurantDialogListener;
 import view.addRestaurantDialog.AddRestaurantDialog;
-
 import java.util.*;
 import java.util.stream.Collectors;
 

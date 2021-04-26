@@ -18,6 +18,7 @@ public class DataPanel extends JPanel implements IDataPanel {
         cardDisplayPanel = new CardDisplayPanel();
 
         setLayout(new CardLayout());
+        setBorder(BorderFactory.createTitledBorder("My favorites..."));
         add(freshStartPanel, freshStartPanelName);
         add(cardDisplayPanel, cardDisplayPanelName);
     }

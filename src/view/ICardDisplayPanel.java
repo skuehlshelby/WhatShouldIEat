@@ -1,5 +1,8 @@
 package view;
 
+import view.restaurantCard.IRestaurantCard;
+import view.restaurantCard.RestaurantCard;
+
 import java.util.List;
 
 public interface ICardDisplayPanel {

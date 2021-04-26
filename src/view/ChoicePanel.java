@@ -18,23 +18,21 @@ public class ChoicePanel extends JPanel implements IChoicePanel {
     private void setupLayout(){
         JPanel panel = new JPanel();
         panel.setBorder(BorderFactory.createTitledBorder("You should eat..."));
-        panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
+        panel.setLayout(new GridBagLayout());
 
-        Dimension dimension = choice.getPreferredSize();
-        dimension.setSize(200, 75);
-        choice.setPreferredSize(dimension);
+        choice.setFont(new Font(Font.SERIF, Font.BOLD, 18));
+        choice.setHorizontalTextPosition(SwingConstants.CENTER);
+        choice.setVerticalTextPosition(SwingConstants.CENTER);
         choice.setHorizontalAlignment(SwingConstants.CENTER);
         choice.setVerticalAlignment(SwingConstants.CENTER);
 
-        panel.add(Box.createHorizontalStrut(10));
-        panel.add(choice);
-        panel.add(Box.createHorizontalStrut(10));
+        panel.add(choice, new GridBagConstraintBuilder(0, 0).fillVerticallyAndHorizontally().build());
 
         chooseAgain.setHorizontalAlignment(SwingConstants.CENTER);
 
-        setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-        add(panel);
-        add(chooseAgain);
+        setLayout(new GridBagLayout());
+        add(panel, new GridBagConstraintBuilder(0,0).rowWeight(GridBagConstraintBuilder.HUGE).fillVerticallyAndHorizontally().build());
+        add(chooseAgain, new GridBagConstraintBuilder(0, 1).rowWeight(GridBagConstraintBuilder.TINY).build());
     }
 
     @Override

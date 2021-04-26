@@ -1,5 +1,7 @@
 package view.freshStartPanel;
 
+import view.GridBagConstraintBuilder;
+
 import javax.swing.*;
 import javax.swing.event.EventListenerList;
 import java.awt.*;
@@ -7,26 +9,30 @@ import java.awt.event.ActionEvent;
 
 public class FreshStartPanel extends JPanel implements IFreshStartPanel {
     private final EventListenerList events;
-    private final JLabel prompt;
     private final JButton loadFromFile;
     private final JButton addNew;
 
     public FreshStartPanel() {
         events = new EventListenerList();
-        prompt = new JLabel("Track your favorite restaurants:");
         loadFromFile = new JButton("Load from file...");
         addNew = new JButton("Add a new restaurant...");
 
         registerEvents();
 
-        Dimension dimension = new Dimension(50, 10);
+        setupLayout();
+    }
 
-        setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-        add(Box.createHorizontalStrut(10));
-        add(loadFromFile);
-        add(Box.createRigidArea(dimension));
-        add(addNew);
-        add(Box.createHorizontalStrut(10));
+    private void setupLayout() {
+        setLayout(new GridBagLayout());
+        add(Box.createVerticalStrut(10), new GridBagConstraintBuilder(0, 0).columnWeight(GridBagConstraintBuilder.LARGE).spanXNumberOfRows(5).build());
+
+        add(Box.createHorizontalStrut(10), new GridBagConstraintBuilder(1, 0).rowWeight(GridBagConstraintBuilder.HUGE).build());
+        add(loadFromFile, new GridBagConstraintBuilder(1, 1).fillHorizontally().rowWeight(GridBagConstraintBuilder.SMALL).build());
+        add(Box.createRigidArea(new Dimension(10, 5)), new GridBagConstraintBuilder(1, 2).fillHorizontally().rowWeight(GridBagConstraintBuilder.TINY).build());
+        add(addNew, new GridBagConstraintBuilder(1, 3).fillHorizontally().rowWeight(GridBagConstraintBuilder.SMALL).build());
+        add(Box.createHorizontalStrut(10), new GridBagConstraintBuilder(1, 4).rowWeight(GridBagConstraintBuilder.HUGE).build());
+
+        add(Box.createVerticalStrut(10), new GridBagConstraintBuilder(2, 0).columnWeight(GridBagConstraintBuilder.LARGE).spanXNumberOfRows(5).build());
     }
 
     private void registerEvents() {
